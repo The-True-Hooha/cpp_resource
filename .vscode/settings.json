@@ -1,0 +1,4 @@
+{
+  "code-runner.customCommand": "${command:workbench.action.tasks.build}",
+  "code-runner.runInTerminal": true
+}
