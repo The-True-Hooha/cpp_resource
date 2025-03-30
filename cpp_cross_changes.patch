@@ -1,0 +1,148 @@
+From 7612b064c797b2048f3199cef0045e0a4a3ebfc8 Mon Sep 17 00:00:00 2001
+From: Davidhero <owogogahhero@outlook.com>
+Date: Sun, 30 Mar 2025 23:34:29 +0100
+Subject: [PATCH] new changes
+
+---
+ .gitignore                  |  7 +++++++
+ .gitmodules                 |  3 +++
+ CMakeLists.txt              | 11 +++++++++++
+ external/glfw               |  1 +
+ libs/DemoLib/CMakeLists.txt |  1 +
+ libs/DemoLib/DemoLib.cpp    |  5 +++++
+ libs/DemoLib/DemoLib.h      |  9 +++++++++
+ src/main.cpp                | 31 +++++++++++++++++++++++++++++++
+ 8 files changed, 68 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 .gitmodules
+ create mode 100644 CMakeLists.txt
+ create mode 160000 external/glfw
+ create mode 100644 libs/DemoLib/CMakeLists.txt
+ create mode 100644 libs/DemoLib/DemoLib.cpp
+ create mode 100644 libs/DemoLib/DemoLib.h
+ create mode 100644 src/main.cpp
+
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 0000000..c7f8c90
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1,7 @@
++build/
++**/build/
++
++
++# Clangd
++.clangd/
++.cache/
+diff --git a/.gitmodules b/.gitmodules
+new file mode 100644
+index 0000000..bc4fe37
+--- /dev/null
++++ b/.gitmodules
+@@ -0,0 +1,3 @@
++[submodule "external/glfw"]
++	path = external/glfw
++	url = https://github.com/glfw/glfw.git
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+new file mode 100644
+index 0000000..3de9be5
+--- /dev/null
++++ b/CMakeLists.txt
+@@ -0,0 +1,11 @@
++cmake_minimum_required(VERSION 3.31)
++
++project(Demo VERSION 1.0)
++
++add_executable(Demo src/main.cpp)
++
++add_subdirectory(libs/DemoLib)
++add_subdirectory(external/glfw)
++
++target_include_directories(Demo PUBLIC libs/DemoLib external/glfw/include)
++target_link_libraries(Demo PUBLIC DemoLib glfw)
+\ No newline at end of file
+diff --git a/external/glfw b/external/glfw
+new file mode 160000
+index 0000000..e7ea71b
+--- /dev/null
++++ b/external/glfw
+@@ -0,0 +1 @@
++Subproject commit e7ea71be039836da3a98cea55ae5569cb5eb885c
+diff --git a/libs/DemoLib/CMakeLists.txt b/libs/DemoLib/CMakeLists.txt
+new file mode 100644
+index 0000000..fa70729
+--- /dev/null
++++ b/libs/DemoLib/CMakeLists.txt
+@@ -0,0 +1 @@
++add_library(DemoLib DemoLib.h DemoLib.cpp)
+\ No newline at end of file
+diff --git a/libs/DemoLib/DemoLib.cpp b/libs/DemoLib/DemoLib.cpp
+new file mode 100644
+index 0000000..e90f364
+--- /dev/null
++++ b/libs/DemoLib/DemoLib.cpp
+@@ -0,0 +1,5 @@
++#include "DemoLib.h"
++
++int DemoLib::getNumber() { return this->m_number; }
++
++void DemoLib::setNumber(int in_number) { this->m_number = in_number; }
+\ No newline at end of file
+diff --git a/libs/DemoLib/DemoLib.h b/libs/DemoLib/DemoLib.h
+new file mode 100644
+index 0000000..ea2f1a1
+--- /dev/null
++++ b/libs/DemoLib/DemoLib.h
+@@ -0,0 +1,9 @@
++#pragma once
++class DemoLib {
++private:
++  int m_number;
++
++public:
++  int getNumber();
++  void setNumber(int in_number);
++};
+\ No newline at end of file
+diff --git a/src/main.cpp b/src/main.cpp
+new file mode 100644
+index 0000000..a36c579
+--- /dev/null
++++ b/src/main.cpp
+@@ -0,0 +1,31 @@
++#include <GLFW/glfw3.h>
++
++int main(void) {
++  GLFWwindow *window;
++
++  /* Initialize the library */
++  if (!glfwInit())
++    return -1;
++
++  /* Create a windowed mode window and its OpenGL context */
++  window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
++  if (!window) {
++    glfwTerminate();
++    return -1;
++  }
++
++  /* Make the window's context current */
++  glfwMakeContextCurrent(window);
++
++  /* Loop until the user closes the window */
++  while (!glfwWindowShouldClose(window)) {
++    
++    glfwSwapBuffers(window);
++
++    /* Poll for and process events */
++    glfwPollEvents();
++  }
++
++  glfwTerminate();
++  return 0;
++}
+\ No newline at end of file
+-- 
+2.45.1.windows.1
+
